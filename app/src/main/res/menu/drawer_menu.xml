@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@id/nav_drawer_new_session_item"
+            android:orderInCategory="100"
+            android:title="@string/new_session_menu_item"
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@id/nav_drawer_previous_sessions_item"
+            android:orderInCategory="200"
+            android:title="@string/previous_sessions_menu_item"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@id/nav_drawer_stats_item"
+            android:orderInCategory="300"
+            android:title="@string/session_stats_menu_item"
+            app:showAsAction="ifRoom" />
+    </group>
+</menu>
