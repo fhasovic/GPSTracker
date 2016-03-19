@@ -22,7 +22,6 @@ public class FirebaseHelperImpl implements FirebaseHelper {
     private final String username;
     private final Firebase firebase;
     private Query mLocationsQuery;
-    private ChildEventListener childEventListener;
 
     public FirebaseHelperImpl(String sessionName, String username) {
         this.firebase = new Firebase(StringConstants.BASE_URL);
@@ -43,10 +42,11 @@ public class FirebaseHelperImpl implements FirebaseHelper {
     @Override
     public void requestLocations(final ResponseListener<LocationWrapper> listener) {
         mLocationsQuery = firebase.child(StringConstants.USERS_PATH).child(username).child(StringConstants.SESSIONS_PATH).child(sessionName);
-        childEventListener = new ChildEventListener() {
+        mLocationsQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 listener.onSuccess(dataSnapshot.getValue(LocationWrapper.class));
+
             }
 
             @Override
@@ -68,8 +68,7 @@ public class FirebaseHelperImpl implements FirebaseHelper {
             public void onCancelled(FirebaseError firebaseError) {
                 listener.onFailure(firebaseError.toException());
             }
-        };
-        mLocationsQuery.addChildEventListener(childEventListener);
+        });
     }
 
     @Override
@@ -194,10 +193,5 @@ public class FirebaseHelperImpl implements FirebaseHelper {
                 listener.onFailure(firebaseError.toException());
             }
         });
-    }
-
-    @Override
-    public void removeLocationsListener() {
-        mLocationsQuery.removeEventListener(childEventListener);
     }
 }

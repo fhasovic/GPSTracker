@@ -58,8 +58,8 @@ public class CustomRecyclerRecyclerAdapter extends RecyclerView.Adapter<CustomRe
 
     @Override
     public void deleteItem(String sessionName) {
-        presenter.sendDeleteRequest(sessionName); //deletes it from the firebase aswell
-        presenter.requestListOfSessions(); //refreshes the list after deleteion
+        presenter.sendDeleteRequest(sessionName); //deletes it from the firebase as well
+        presenter.requestListOfSessions(); //refreshes the list after deletion
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnLongClickListener, RecyclerView.OnClickListener {

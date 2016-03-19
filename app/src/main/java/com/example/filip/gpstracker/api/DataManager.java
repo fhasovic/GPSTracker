@@ -41,8 +41,6 @@ public interface DataManager {
 
     Stats getCurrentSessionTrackingStatsFromDatabaseHelper();
 
-    void removeLocationListener();
-
     void requestListOfStatsForCurrentUserSessions(ResponseListener<DataSnapshot> listener);
 
     ArrayList<Stats> createListOfStats(DataSnapshot snapshot);

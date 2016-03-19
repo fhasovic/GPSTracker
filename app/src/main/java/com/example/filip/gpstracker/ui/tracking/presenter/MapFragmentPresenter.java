@@ -16,6 +16,4 @@ public interface MapFragmentPresenter {
     void sendStatsToFirebase(long startTime, long endTime);
 
     void requestStatsForTrackingSession();
-
-    void removeLocationListener();
 }

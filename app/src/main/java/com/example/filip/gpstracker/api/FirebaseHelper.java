@@ -33,6 +33,4 @@ public interface FirebaseHelper {
     void getCurrentTrackingSessionStats(ResponseListener<Stats> listener);
 
     void requestStatsForCurrentUser(ResponseListener<DataSnapshot> listener);
-
-    void removeLocationsListener();
 }

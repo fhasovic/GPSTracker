@@ -77,8 +77,15 @@ public class TrackingMapFragment extends Fragment implements OnMapReadyCallback,
         initMap();
         initTrackingHelper();
         initPresenter();
+        presenter.requestStatsForTrackingSession();
         presenter.requestLocationsFromFirebase(); //loads all the previous markers for display
         initLocationServiceThread();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopTracking();
     }
 
     @Override
@@ -88,13 +95,6 @@ public class TrackingMapFragment extends Fragment implements OnMapReadyCallback,
             return;
         }
         mGoogleMap.setMyLocationEnabled(true);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        removeCallbacks();
-        resetFABIcon();
     }
 
     private void initUI(View view) {
@@ -176,9 +176,6 @@ public class TrackingMapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void startTracking() {
-        mGoogleMap.clear(); //clears the markers so we don't have possible duplicates/memory leak
-        presenter.requestStatsForTrackingSession(); //always gets the updates tracking stats, and on tracking stop adds the time elapsed while tracking was resumed, and the distance passed whilst tracking
-        presenter.requestLocationsFromFirebase(); //adds a listener for locations, which also loads the previous ones
         helper.connectClient(); //establishes an internet(gps) connection
         startLocationRunnable(); //starts the tracking
         helper.setTrackingStatus(true); //TRACKING ON
@@ -186,7 +183,7 @@ public class TrackingMapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void stopTracking() {
-        removeCallbacks(); //removes location listeners to ensure null pointer safety, disconnects the client, and stops the runnable
+        removeCallbacks();
         helper.setTrackingStatus(false); //TRACKING OFF
         presenter.sendStatsToFirebase(helper.getStartTime(), System.currentTimeMillis()); //push the results
     }
@@ -207,12 +204,5 @@ public class TrackingMapFragment extends Fragment implements OnMapReadyCallback,
     private void removeCallbacks() {
         helper.disconnectClient();
         stopLocationRunnable();
-        presenter.removeLocationListener();
-    }
-    private void resetFABIcon(){
-        if(helper.getTrackingStatus()){
-            floatingActionButton.setImageResource(R.drawable.ic_location_off_black_24dp);
-            helper.setTrackingStatus(false);
-        }
     }
 }

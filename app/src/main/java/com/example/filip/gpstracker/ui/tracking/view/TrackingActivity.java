@@ -40,7 +40,7 @@ public class TrackingActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         initNavBar();
-        initStartFragment();
+        addNewSessionFragment();
     }
 
     @Override
@@ -78,15 +78,6 @@ public class TrackingActivity extends AppCompatActivity {
     private void setHomeButtonsAsNavBarOpening(@NonNull ActionBar actionBar) {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
-    }
-
-    private void initStartFragment() {
-        if (getSupportFragmentManager().findFragmentById(R.id.tracking_activity_frame_layout) == null) //if there isn't a fragment already in the frame layout(user first started the activity)
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.tracking_activity_frame_layout, new TrackingUserFragment())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();
     }
 
     private void handleItemSelectedClick(int itemID) {

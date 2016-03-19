@@ -78,15 +78,13 @@ public class MapFragmentPresenterImpl implements MapFragmentPresenter {
 
     }
 
-    @Override
-    public void removeLocationListener() {
-        dataManager.removeLocationListener();
-    }
-
-    private void createDialogDataForTheViewToDisplay(Stats currentSessionStats) { //sends all the data in the form of strings to the View, for it to display in a fragment
-        int timeElapsed = (int) currentSessionStats.getTimeElapsed();
-        float distanceTraversed = currentSessionStats.getDistanceTraversed();
-        trackingFragmentView.showStatsDialog(createTimeElapsedString(timeElapsed), createDistanceTraversedString(distanceTraversed), createAverageSpeedString(timeElapsed, distanceTraversed));
+    private void createDialogDataForTheViewToDisplay(Stats currentSessionStats) {
+        if (currentSessionStats != null)//sends all the data in the form of strings to the View, for it to display in a fragment
+        {
+            int timeElapsed = (int) currentSessionStats.getTimeElapsed();
+            float distanceTraversed = currentSessionStats.getDistanceTraversed();
+            trackingFragmentView.showStatsDialog(createTimeElapsedString(timeElapsed), createDistanceTraversedString(distanceTraversed), createAverageSpeedString(timeElapsed, distanceTraversed));
+        }
     }
 
     private String createTimeElapsedString(int timeElapsed) {

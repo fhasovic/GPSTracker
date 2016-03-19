@@ -4,7 +4,7 @@ package com.example.filip.gpstracker.constants;
  * Created by Filip on 03/03/2016.
  */
 public class StringConstants {
-    public final static String BASE_URL = "<your-firebase>";
+    public final static String BASE_URL = "";
     public final static String SESSIONS_PATH = "/sessions/";
     public final static String LIST_OF_SESSIONS_PATH = "/sessionsList/";
     public final static String STATS_PATH = "/stats/";

@@ -103,7 +103,8 @@ public class DataManagerImpl implements DataManager {
     public void sendStatsToFirebase(long startTime, long endTime) {
         databaseHelper.addTimeSpentWhileTrackingLastStarted(databaseHelper.calculateTimeElapsed(startTime, endTime));
         Stats stats = databaseHelper.getCurrentSessionStats(); //gets the complete stats
-        firebaseHelper.pushStatsToFirebase(stats.getTimeElapsed(), stats.getDistanceTraversed()); //pushes to firebase when tracking stopped
+        if (stats != null)
+            firebaseHelper.pushStatsToFirebase(stats.getTimeElapsed(), stats.getDistanceTraversed()); //pushes to firebase when tracking stopped
     }
 
     @Override
@@ -119,11 +120,6 @@ public class DataManagerImpl implements DataManager {
     @Override
     public Stats getCurrentSessionTrackingStatsFromDatabaseHelper() {
         return databaseHelper.getCurrentSessionStats();
-    }
-
-    @Override
-    public void removeLocationListener() {
-        firebaseHelper.removeLocationsListener();
     }
 
     @Override
