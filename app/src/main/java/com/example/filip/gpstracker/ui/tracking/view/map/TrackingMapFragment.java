@@ -85,7 +85,8 @@ public class TrackingMapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onPause() {
         super.onPause();
-        stopTracking();
+        if (helper.getTrackingStatus())
+            stopTracking();
     }
 
     @Override

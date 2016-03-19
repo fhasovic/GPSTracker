@@ -16,8 +16,8 @@ public class DatabaseHelperImpl implements DatabaseHelper {
     private Stats currentSessionStats;
 
     @Override
-    public long calculateTimeElapsed(long startTime, long endTime) {
-        return (endTime - startTime) / 1000;
+    public int calculateTimeElapsed(long startTime, long endTime) {
+        return (int) ((endTime - startTime) / 1000);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class DatabaseHelperImpl implements DatabaseHelper {
     }
 
     @Override
-    public void addTimeSpentWhileTrackingLastStarted(long timeElapsed) {
+    public void addTimeSpentWhileTrackingLastStarted(int timeElapsed) {
         if (currentSessionStats != null)
             currentSessionStats.addMoreTimeSpentTracking(timeElapsed);
     }

@@ -6,7 +6,7 @@ package com.example.filip.gpstracker.model;
 public class Stats {
     private String sessionName;
     private float distanceTraversed;
-    private long timeElapsed;
+    private int timeElapsed;
 
     public float getDistanceTraversed() {
         return distanceTraversed;
@@ -20,7 +20,7 @@ public class Stats {
         return timeElapsed; //seconds
     }
 
-    public void setTimeElapsed(long timeElapsed) {
+    public void setTimeElapsed(int timeElapsed) {
         this.timeElapsed = timeElapsed;
     }
 
@@ -32,7 +32,7 @@ public class Stats {
         this.sessionName = sessionName;
     }
 
-    public void addMoreTimeSpentTracking(long timeElapsed) {
+    public void addMoreTimeSpentTracking(int timeElapsed) {
         this.timeElapsed += timeElapsed;
     }
 

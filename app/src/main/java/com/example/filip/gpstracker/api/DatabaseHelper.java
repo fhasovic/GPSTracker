@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by Filip on 03/03/2016.
  */
 public interface DatabaseHelper {
-    long calculateTimeElapsed(long startTime, long endTime);
+    int calculateTimeElapsed(long startTime, long endTime);
 
     void addDistanceFromNewLocationsToTotalDistance(Location currentLocation, Location lastLocation);
 
@@ -26,7 +26,7 @@ public interface DatabaseHelper {
 
     Stats getCurrentSessionStats();
 
-    void addTimeSpentWhileTrackingLastStarted(long timeElapsed);
+    void addTimeSpentWhileTrackingLastStarted(int timeElapsed);
 
     ArrayList<Stats> createListOfStatsFromSnapshot(DataSnapshot snapshot);
 

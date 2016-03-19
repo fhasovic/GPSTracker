@@ -92,8 +92,7 @@ public class MapFragmentPresenterImpl implements MapFragmentPresenter {
     }
 
     private String createDistanceTraversedString(float distanceTraversed) {
-        int distanceRoundedUp = (int) distanceTraversed;
-        return "Total distance traversed: " + String.valueOf(distanceRoundedUp) + " meters.";
+        return "Total distance traversed: " + String.valueOf(distanceTraversed) + " meters.";
     }
 
     private String createAverageSpeedString(int timeElapsed, float distanceTraversed) {
