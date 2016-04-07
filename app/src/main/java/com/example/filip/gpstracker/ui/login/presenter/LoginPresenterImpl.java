@@ -1,9 +1,6 @@
 package com.example.filip.gpstracker.ui.login.presenter;
 
-import com.example.filip.gpstracker.api.DataManager;
-import com.example.filip.gpstracker.api.DataManagerImpl;
-import com.example.filip.gpstracker.api.DatabaseHelperImpl;
-import com.example.filip.gpstracker.api.FirebaseHelperImpl;
+import com.example.filip.gpstracker.api.RequestManager;
 import com.example.filip.gpstracker.api.ResponseListener;
 import com.example.filip.gpstracker.ui.login.view.LoginView;
 
@@ -12,17 +9,17 @@ import com.example.filip.gpstracker.ui.login.view.LoginView;
  */
 public class LoginPresenterImpl implements LoginPresenter {
     private final LoginView loginView;
-    private final DataManager dataManager;
+    private final RequestManager requestManager;
 
-    public LoginPresenterImpl(LoginView loginView) {
+    public LoginPresenterImpl(LoginView loginView, RequestManager requestManager) {
         this.loginView = loginView;
-        this.dataManager = new DataManagerImpl(new DatabaseHelperImpl(), new FirebaseHelperImpl(null, null));
+        this.requestManager = requestManager;
     }
 
     @Override
     public void sendLoginRequestToFirebase(String email, String password) {
         loginView.showProgressBar();
-        dataManager.sendUserLoginAttemptToFirebase(email, password, new ResponseListener<String>() {
+        requestManager.attemptToLogTheUserIn(email, password, new ResponseListener<String>() {
             @Override
             public void onSuccess(String callback) {
                 loginView.hideProgressBar();

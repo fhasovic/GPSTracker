@@ -1,6 +1,6 @@
 package com.example.filip.gpstracker.ui.tracking.adapter;
 
-import com.example.filip.gpstracker.model.Session;
+import com.example.filip.gpstracker.pojo.Session;
 
 import java.util.ArrayList;
 
@@ -9,8 +9,4 @@ import java.util.ArrayList;
  */
 public interface CustomRecyclerAdapterView {
     void addAllItems(ArrayList<Session> sessionsList);
-
-    void fillAdapterWithItems();
-
-    void deleteItem(String sessionName);
 }

@@ -20,12 +20,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         Firebase.setAndroidContext(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        initFragment();
+        if (savedInstanceState == null)
+            initFragment();
     }
 
     @Override
@@ -36,11 +32,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initFragment() {
-        if (getSupportFragmentManager().findFragmentById(R.id.register_activity_frame_layout) == null)
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.register_activity_frame_layout, new UsernameFragment())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.register_activity_frame_layout, new UsernameFragment())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
     }
 }

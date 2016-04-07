@@ -10,5 +10,5 @@ public interface TrackingFragmentView {
 
     void sendLocationToPresenter(Location location);
 
-    void showStatsDialog(String timeElapsed, String distanceTraversed, String averageSpeed);
+    void showStatsDialog(int timeElapsed, float distanceTraversed, float averageSpeed);
 }

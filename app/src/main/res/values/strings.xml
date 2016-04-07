@@ -17,8 +17,8 @@
     <string name="new_session_edit_text_hint_message">e.g. MySession</string>
     <string name="username_edit_text_hint">e.g. username</string>
     <string name="continue_button_text">Continue with registration</string>
-    <string name="session_already_exists_toast_message">Session already exists!</string>
-    <string name="dialog_message">"Do you want to delete: "</string>
+    <string name="session_already_exists_error_message">Session already exists!</string>
+    <string name="dialog_message">"Do you want to delete: %1$s"</string>
     <string name="dialog_positive_button_text">Yes</string>
     <string name="dialog_negative_button_text">Go back!</string>
     <string name="tracking_started_toast_message">Tracking started!</string>
@@ -35,4 +35,9 @@
     <string name="login_activity_toolbar_title">Log in!</string>
     <string name="main_activity_toolbar_title_message">Welcome to GPSTracking!</string>
     <string name="username_fragment_empty_field_error_message">Username should not be empty!</string>
+    <string name="session_name_empty_error_message">Session name cannot be empty!</string>
+    <string name="tracking_stopped_dialog_message">Distance passed: %1$f m , time elapsed: %2$d s , average speed: %3$f km/h .</string>
+    <string name="stats_session_name_text_view_message">"Session name: %1$s ."</string>
+    <string name="stats_time_elapsed_text_view_message">"Time elapsed: %1$d s."</string>
+    <string name="stats_distance_traversed_text_view_message">"Distance traversed: %1$f m."</string>
 </resources>

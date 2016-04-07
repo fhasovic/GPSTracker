@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.filip.gpstracker.App;
 import com.example.filip.gpstracker.R;
-import com.example.filip.gpstracker.constants.StringConstants;
+import com.example.filip.gpstracker.constants.Constants;
 import com.example.filip.gpstracker.ui.register.presenter.UsernamePresenter;
 import com.example.filip.gpstracker.ui.register.presenter.UsernamePresenterImpl;
 
@@ -48,19 +48,19 @@ public class UsernameFragment extends Fragment implements UsernameFragmentView, 
     @Override
     public void onSuccess() {
         Bundle data = new Bundle();
-        data.putString(StringConstants.USERNAME_KEY, mUsernameTextView.getText().toString());
+        data.putString(Constants.USERNAME_KEY, mUsernameTextView.getText().toString());
         getActivity().
                 getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.register_activity_frame_layout, AccountFragment.newInstance(data))
-                .addToBackStack(StringConstants.REGISTER_FRAGMENT)
+                .addToBackStack(Constants.REGISTER_FRAGMENT)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
     }
 
     @Override
     public void onFailure() {
-        Toast.makeText(getActivity().getApplicationContext(), R.string.username_taken_error_message, Toast.LENGTH_SHORT).show();
+        mUsernameTextView.setError(getActivity().getString(R.string.username_taken_error_message));
     }
 
     private void initUI(View view) {
@@ -72,14 +72,19 @@ public class UsernameFragment extends Fragment implements UsernameFragmentView, 
     }
 
     private void initPresenter() {
-        presenter = new UsernamePresenterImpl(this);
+        presenter = new UsernamePresenterImpl(this, App.getInstance().getRequestManager());
     }
 
     @Override
     public void onClick(View v) {
-        if (v == mContinueWithRegistrationButton && !mUsernameTextView.getText().toString().equals(""))
-            presenter.checkIfUsernameIsAvailable(mUsernameTextView.getText().toString());
+        if (v == mContinueWithRegistrationButton)
+            handleButtonClick();
+    }
+
+    private void handleButtonClick() {
+        if (mUsernameTextView.getText().toString().equals(""))
+            mUsernameTextView.setError(getActivity().getString(R.string.username_fragment_empty_field_error_message));
         else
-            Toast.makeText(getActivity().getApplicationContext(), R.string.username_fragment_empty_field_error_message, Toast.LENGTH_SHORT).show();
+            presenter.checkIfUsernameIsAvailable(mUsernameTextView.getText().toString());
     }
 }

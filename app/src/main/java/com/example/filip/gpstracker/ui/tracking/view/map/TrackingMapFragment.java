@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -18,12 +17,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.filip.gpstracker.App;
 import com.example.filip.gpstracker.R;
-import com.example.filip.gpstracker.api.TrackingHelper;
-import com.example.filip.gpstracker.api.TrackingHelperImpl;
-import com.example.filip.gpstracker.constants.StringConstants;
-import com.example.filip.gpstracker.ui.tracking.presenter.MapFragmentPresenter;
-import com.example.filip.gpstracker.ui.tracking.presenter.MapFragmentPresenterImpl;
+import com.example.filip.gpstracker.helpers.data.TrackingStatsHelperImpl;
+import com.example.filip.gpstracker.helpers.tracking.TrackingHelper;
+import com.example.filip.gpstracker.helpers.tracking.TrackingHelperImpl;
+import com.example.filip.gpstracker.constants.Constants;
+import com.example.filip.gpstracker.pojo.Stats;
+import com.example.filip.gpstracker.ui.tracking.presenter.map.MapFragmentPresenter;
+import com.example.filip.gpstracker.ui.tracking.presenter.map.MapFragmentPresenterImpl;
+import com.example.filip.gpstracker.utils.NetworkUtils;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
@@ -61,13 +64,7 @@ public class TrackingMapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        try {
-            if (Settings.Secure.getInt(getActivity().getContentResolver(), Settings.Secure.LOCATION_MODE) == 0) {
-                Toast.makeText(getActivity().getApplicationContext(), R.string.turn_location_on_toast, Toast.LENGTH_LONG).show();
-            }
-        } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
-        }
+        checkIfLocationIsAvailable();
         initUI(view);
     }
 
@@ -77,9 +74,9 @@ public class TrackingMapFragment extends Fragment implements OnMapReadyCallback,
         initMap();
         initTrackingHelper();
         initPresenter();
-        presenter.requestStatsForTrackingSession();
+        presenter.requestStatsForTrackingSession(); //gets the stats for the current session
         presenter.requestLocationsFromFirebase(); //loads all the previous markers for display
-        initLocationServiceThread();
+        initLocationServiceThread(); //preps the service
     }
 
     @Override
@@ -116,7 +113,8 @@ public class TrackingMapFragment extends Fragment implements OnMapReadyCallback,
 
     private void initPresenter() {
         Bundle data = this.getArguments();
-        presenter = new MapFragmentPresenterImpl(this, data.getString(StringConstants.SESSION_KEY), data.getString(StringConstants.USERNAME_KEY));
+        App.getInstance().setCurrentSession(data.getString(Constants.SESSION_KEY));
+        presenter = new MapFragmentPresenterImpl(this, App.getInstance().getRequestManager(), new TrackingStatsHelperImpl(new Stats(), null));
     }
 
     private void initLocationServiceThread() {
@@ -154,8 +152,17 @@ public class TrackingMapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void showStatsDialog(String timeElapsed, String distanceTraversed, String averageSpeed) {
-        createTrackingStatsDialog(timeElapsed, distanceTraversed, averageSpeed); //sends the string data to a dialog builder
+    public void showStatsDialog(int timeElapsed, float distanceTraversed, float averageSpeed) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(getActivity().getString(R.string.tracking_stopped_dialog_message, distanceTraversed, timeElapsed, averageSpeed));
+        builder.setNeutralButton(getActivity().getString(R.string.stats_alert_dialog_neutral_button_message), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
@@ -189,21 +196,13 @@ public class TrackingMapFragment extends Fragment implements OnMapReadyCallback,
         presenter.sendStatsToFirebase(helper.getStartTime(), System.currentTimeMillis()); //push the results
     }
 
-    private void createTrackingStatsDialog(String timeElapsed, String distanceTraversed, String averageSpeed) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(timeElapsed + "\t" + distanceTraversed + "\t" + averageSpeed);
-        builder.setNeutralButton(getActivity().getString(R.string.stats_alert_dialog_neutral_button_message), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
     private void removeCallbacks() {
         helper.disconnectClient();
         stopLocationRunnable();
+    }
+
+    private void checkIfLocationIsAvailable() {
+        if (!NetworkUtils.checkIfLocationServiceIsActivated(getActivity().getApplicationContext()))
+            Toast.makeText(getActivity().getApplicationContext(), getActivity().getString(R.string.turn_location_on_toast), Toast.LENGTH_LONG).show();
     }
 }

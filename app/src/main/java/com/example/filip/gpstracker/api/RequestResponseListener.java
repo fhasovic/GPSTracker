@@ -5,5 +5,6 @@ package com.example.filip.gpstracker.api;
  */
 public interface RequestResponseListener {
     void onSuccess();
-    void onFailure(Throwable t);
+
+    void onFailure();
 }

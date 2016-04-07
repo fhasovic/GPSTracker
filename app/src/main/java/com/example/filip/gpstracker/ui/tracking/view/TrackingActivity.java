@@ -13,12 +13,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.filip.gpstracker.App;
 import com.example.filip.gpstracker.R;
-import com.example.filip.gpstracker.constants.StringConstants;
-import com.example.filip.gpstracker.ui.tracking.view.user.TrackingUserFragment;
-import com.example.filip.gpstracker.ui.tracking.view.user.TrackingUserSessionsFragment;
-import com.example.filip.gpstracker.ui.tracking.view.user.TrackingUserStatsFragment;
-import com.firebase.client.Firebase;
+import com.example.filip.gpstracker.constants.Constants;
+import com.example.filip.gpstracker.ui.tracking.view.main.TrackingUserFragment;
+import com.example.filip.gpstracker.ui.tracking.view.sessions.TrackingUserSessionsFragment;
+import com.example.filip.gpstracker.ui.tracking.view.stats.TrackingUserStatsFragment;
 
 /**
  * Created by Filip on 05/03/2016.
@@ -32,15 +32,21 @@ public class TrackingActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracking);
-        Firebase.setAndroidContext(this);
         initToolbarAndDrawer();
+        if (savedInstanceState == null)
+            addNewSessionFragment();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         initNavBar();
-        addNewSessionFragment();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        App.getInstance().setCurrentUser(null);
     }
 
     @Override
@@ -63,7 +69,7 @@ public class TrackingActivity extends AppCompatActivity {
     private void initNavBar() {
         navigationView = (NavigationView) findViewById(R.id.tracking_activity_navigation_view);
         TextView usernameTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_drawer_header_username_text_view); //get the text view from the first header(only one header atm)
-        usernameTextView.setText(getIntent().getStringExtra(StringConstants.USERNAME_KEY));
+        usernameTextView.setText(getIntent().getStringExtra(Constants.USERNAME_KEY));
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {

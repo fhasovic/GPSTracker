@@ -12,8 +12,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.filip.gpstracker.App;
 import com.example.filip.gpstracker.R;
-import com.example.filip.gpstracker.constants.StringConstants;
+import com.example.filip.gpstracker.constants.Constants;
 import com.example.filip.gpstracker.ui.register.presenter.RegisterPresenter;
 import com.example.filip.gpstracker.ui.register.presenter.RegisterPresenterImpl;
 
@@ -55,27 +56,30 @@ public class AccountFragment extends Fragment implements RegisterView, View.OnCl
     private void initUI(View view) {
         mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
         mToolbar.setTitle(R.string.choose_your_account_details_toolbar_title);
+
         mEmailEditText = (EditText) view.findViewById(R.id.register_fragment_email_edit_text);
         mPasswordEditText = (EditText) view.findViewById(R.id.register_fragment_password_edit_text);
+
         mFinishRegistrationButton = (Button) view.findViewById(R.id.register_fragment_finish_registration_button);
         mFinishRegistrationButton.setOnClickListener(this);
+
         mSpinningProgressBar = (ProgressBar) view.findViewById(R.id.fragment_progress_bar);
         mSpinningProgressBar.setVisibility(View.GONE);
     }
 
     private void initPresenter() {
-        presenter = new RegisterPresenterImpl(this);
+        presenter = new RegisterPresenterImpl(this, App.getInstance().getRequestManager());
     }
 
     @Override
     public void onSuccess() {
-        Toast.makeText(getActivity(), R.string.successful_registration_toast, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), R.string.successful_registration_toast, Toast.LENGTH_SHORT).show();
         getActivity().finish();
     }
 
     @Override
     public void onFailure() {
-        Toast.makeText(getActivity().getApplicationContext(), R.string.registration_failed_error_message, Toast.LENGTH_SHORT).show();
+        mEmailEditText.setError(getActivity().getString(R.string.registration_failed_error_message));
     }
 
     @Override
@@ -90,6 +94,6 @@ public class AccountFragment extends Fragment implements RegisterView, View.OnCl
 
     @Override
     public void onClick(View v) {
-        presenter.sendRegistrationAttemptToFirebase(this.getArguments().getString(StringConstants.USERNAME_KEY), mEmailEditText.getText().toString(), mPasswordEditText.getText().toString());
+        presenter.sendRegistrationAttemptToFirebase(this.getArguments().getString(Constants.USERNAME_KEY), mEmailEditText.getText().toString(), mPasswordEditText.getText().toString());
     }
 }

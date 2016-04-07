@@ -12,8 +12,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.filip.gpstracker.App;
 import com.example.filip.gpstracker.R;
-import com.example.filip.gpstracker.constants.StringConstants;
 import com.example.filip.gpstracker.ui.login.presenter.LoginPresenter;
 import com.example.filip.gpstracker.ui.login.presenter.LoginPresenterImpl;
 import com.example.filip.gpstracker.ui.tracking.view.TrackingActivity;
@@ -50,7 +50,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
     }
 
     private void initPresenter() {
-        presenter = new LoginPresenterImpl(this);
+        presenter = new LoginPresenterImpl(this, App.getInstance().getRequestManager());
     }
 
     @Override
@@ -66,15 +66,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
 
     @Override
     public void onSuccessfulLogin(String username) {
-        Intent i = new Intent(getActivity(), TrackingActivity.class);
-        i.putExtra(StringConstants.USERNAME_KEY, username);
-        startActivity(i);
+        App.getInstance().setCurrentUser(username);//sets the application-wide username
+        startActivity(new Intent(getActivity(), TrackingActivity.class));
     }
 
     @Override
     public void onFailedLogin() {
         Toast.makeText(getActivity().getApplicationContext(), R.string.failed_login_error_message, Toast.LENGTH_SHORT).show();
-
     }
 
     @Override

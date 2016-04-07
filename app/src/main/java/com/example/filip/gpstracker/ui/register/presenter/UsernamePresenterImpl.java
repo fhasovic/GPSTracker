@@ -1,9 +1,6 @@
 package com.example.filip.gpstracker.ui.register.presenter;
 
-import com.example.filip.gpstracker.api.DataManager;
-import com.example.filip.gpstracker.api.DataManagerImpl;
-import com.example.filip.gpstracker.api.DatabaseHelperImpl;
-import com.example.filip.gpstracker.api.FirebaseHelperImpl;
+import com.example.filip.gpstracker.api.RequestManager;
 import com.example.filip.gpstracker.api.RequestResponseListener;
 import com.example.filip.gpstracker.ui.register.view.UsernameFragmentView;
 
@@ -11,26 +8,24 @@ import com.example.filip.gpstracker.ui.register.view.UsernameFragmentView;
  * Created by Filip on 08/03/2016.
  */
 public class UsernamePresenterImpl implements UsernamePresenter {
-    private final DataManager dataManager;
+    private final RequestManager requestManager;
     private final UsernameFragmentView usernameFragmentView;
 
-    public UsernamePresenterImpl(UsernameFragmentView usernameFragmentView) {
+    public UsernamePresenterImpl(UsernameFragmentView usernameFragmentView, RequestManager requestManager) {
         this.usernameFragmentView = usernameFragmentView;
-        this.dataManager = new DataManagerImpl(new DatabaseHelperImpl(), new FirebaseHelperImpl(null, null));
+        this.requestManager = requestManager;
     }
 
     @Override
     public void checkIfUsernameIsAvailable(String username) {
-        dataManager.checkIfUsernameIsAlreadyTaken(username, new RequestResponseListener() {
+        requestManager.checkIfUsernameIsAlreadyTaken(username, new RequestResponseListener() {
             @Override
             public void onSuccess() {
                 usernameFragmentView.onSuccess();
             }
 
             @Override
-            public void onFailure(Throwable t) {
-                if (t != null)
-                    t.printStackTrace();
+            public void onFailure() {
                 usernameFragmentView.onFailure();
             }
         });

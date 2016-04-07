@@ -1,5 +1,6 @@
 package com.example.filip.gpstracker.ui.main.view;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -7,31 +8,28 @@ import android.support.v7.widget.Toolbar;
 import com.example.filip.gpstracker.R;
 
 public class MainActivity extends AppCompatActivity {
-    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolbar();
+        if (savedInstanceState == null)
+            initFragment();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        initFragment();
-    }
 
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
         mToolbar.setTitle(R.string.main_activity_toolbar_title_message);
     }
 
     private void initFragment() {
-        if (getSupportFragmentManager().findFragmentById(R.id.main_activity_frame_layout) == null)
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.main_activity_frame_layout, new MainFragment())
-                    .commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.main_activity_frame_layout, new MainFragment())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
     }
 }
