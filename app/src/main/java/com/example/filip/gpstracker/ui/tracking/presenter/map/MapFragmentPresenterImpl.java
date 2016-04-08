@@ -35,7 +35,7 @@ public class MapFragmentPresenterImpl implements MapFragmentPresenter {
     public void sendLocationToFirebase(Location location) {
         if (location != null) {
             requestManager.sendLocationToFirebase(location);
-            trackingStatsHelper.addDistanceFromNewLocationsToTotalDistance(location);
+            trackingStatsHelper.addDistanceFromNewLocationToTotalDistance(location);
         }
     }
 
@@ -52,15 +52,16 @@ public class MapFragmentPresenterImpl implements MapFragmentPresenter {
                 StringUtils.logError(t);
             }
         });
-
     }
 
     @Override
     public void sendStatsToFirebase(long startTime, long endTime) {
         trackingStatsHelper.addTimeSpentWhileTrackingLastStarted(startTime, endTime);
         Stats stats = trackingStatsHelper.getCurrentSessionStats();
-        requestManager.sendStatsToFirebase(stats);
-        createDialogDataForViewOnTrackingStopped(stats);
+        if (stats != null) {
+            requestManager.sendStatsToFirebase(stats);
+            createDialogDataForViewOnTrackingStopped(stats);
+        }
     }
 
     @Override
@@ -80,10 +81,12 @@ public class MapFragmentPresenterImpl implements MapFragmentPresenter {
     }
 
     private float calculateAverageSpeed(int timeElapsed, float distanceTraversed) {
+        if (timeElapsed == 0 && distanceTraversed == 0.0) return 0;
         return distanceTraversed / timeElapsed;
     }
 
-    private void createDialogDataForViewOnTrackingStopped(Stats statsToDisplay) {
+    @Override
+    public void createDialogDataForViewOnTrackingStopped(Stats statsToDisplay) {
         int timeElapsed = statsToDisplay.getTimeElapsed();
         float distanceTraversed = statsToDisplay.getDistanceTraversed();
         trackingFragmentView.showStatsDialog(timeElapsed, distanceTraversed, calculateAverageSpeed(timeElapsed, distanceTraversed));

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.filip.gpstracker.App;
-import com.example.filip.gpstracker.ItemListener;
 import com.example.filip.gpstracker.R;
 import com.example.filip.gpstracker.constants.Constants;
 import com.example.filip.gpstracker.pojo.Session;

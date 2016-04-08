@@ -1,4 +1,4 @@
-package com.example.filip.gpstracker;
+package com.example.filip.gpstracker.ui.tracking.view.sessions;
 
 /**
  * Created by Filip on 11/03/2016.

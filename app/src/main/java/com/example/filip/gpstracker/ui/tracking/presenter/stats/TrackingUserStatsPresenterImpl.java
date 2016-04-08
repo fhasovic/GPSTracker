@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by Filip on 06/04/2016.
  */
-public class TrackingUserStatsPresenterImpl implements TrackingUserStatsPresenter {
+public class TrackingUserStatsPresenterImpl implements TrackingUserStatsPresenter, ResponseListener<DataSnapshot> {
     private final RequestManager requestManager;
     private final TrackingUserStatsView trackingUserStatsView;
 
@@ -24,19 +24,19 @@ public class TrackingUserStatsPresenterImpl implements TrackingUserStatsPresente
 
     @Override
     public void requestStatsFromFirebase() {
-        requestManager.requestListOfStatsForCurrentUserSessions(new ResponseListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(DataSnapshot callback) {
-                if (callback != null) {
-                    ArrayList<Stats> arrayList = FirebaseUtils.getListOfStats(callback);
-                    trackingUserStatsView.fillAdapterWithItems(arrayList);
-                }
-            }
+        requestManager.requestListOfStatsForCurrentUserSessions(this);
+    }
 
-            @Override
-            public void onFailure(Throwable t) {
-                StringUtils.logError(t);
-            }
-        });
+    @Override
+    public void onSuccess(DataSnapshot callback) {
+        if (callback != null) {
+            ArrayList<Stats> arrayList = FirebaseUtils.getListOfStats(callback);
+            trackingUserStatsView.fillAdapterWithItems(arrayList);
+        }
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        StringUtils.logError(t);
     }
 }

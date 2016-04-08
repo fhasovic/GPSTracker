@@ -12,7 +12,7 @@ import com.firebase.client.DataSnapshot;
 public interface FirebaseHelper {
     void pushLocationToFirebase(double latitude, double longitude);
 
-    void pushStatsToFirebase(long timeElapsed, float distanceTraveled);
+    void pushStatsToFirebase(int timeElapsed, float distanceTraveled);
 
     void requestLocations(ResponseListener<LocationWrapper> listener);
 
@@ -26,7 +26,7 @@ public interface FirebaseHelper {
 
     void createNewSessionListItemAfterTrackingStarted(String sessionName);
 
-    void getListOfTakenUsernames(String username, ResponseListener<DataSnapshot> listener);
+    void getListOfTakenUsernames(ResponseListener<DataSnapshot> listener);
 
     void getListOfSessions(ResponseListener<DataSnapshot> listener);
 

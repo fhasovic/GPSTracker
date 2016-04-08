@@ -36,7 +36,7 @@ public class FirebaseHelperImpl implements FirebaseHelper {
     }
 
     @Override
-    public void pushStatsToFirebase(long timeElapsed, float distanceTraveled) {
+    public void pushStatsToFirebase(int timeElapsed, float distanceTraveled) {
         String username = App.getInstance().getCurrentUser();
         String currentSession = App.getInstance().getCurrentSession();
         firebase.child(Constants.USERS_PATH).child(username).child(Constants.STATS_PATH).child(currentSession).setValue(FirebaseUtils.createTrackingStatsObject(timeElapsed, distanceTraveled, currentSession));
@@ -135,7 +135,7 @@ public class FirebaseHelperImpl implements FirebaseHelper {
     }
 
     @Override
-    public void getListOfTakenUsernames(String username, final ResponseListener<DataSnapshot> listener) {
+    public void getListOfTakenUsernames(final ResponseListener<DataSnapshot> listener) {
         firebase.child(Constants.REGISTERED_USERS_PATH).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

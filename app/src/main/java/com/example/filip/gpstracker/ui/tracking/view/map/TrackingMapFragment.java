@@ -87,6 +87,12 @@ public class TrackingMapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        App.getInstance().setCurrentSession(null); //string "novi"
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

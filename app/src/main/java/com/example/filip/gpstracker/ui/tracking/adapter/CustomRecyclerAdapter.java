@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.filip.gpstracker.ItemListener;
+import com.example.filip.gpstracker.ui.tracking.view.sessions.ItemListener;
 import com.example.filip.gpstracker.R;
 import com.example.filip.gpstracker.pojo.Session;
 
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * Created by Filip on 11/03/2016.
  */
-public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.ViewHolder> implements CustomRecyclerAdapterView {
+public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.ViewHolder> {
     private final ArrayList<Session> mListOfSessions = new ArrayList<>();
     private final ItemListener listener;
 
@@ -40,7 +40,6 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
         return mListOfSessions.size();
     }
 
-    @Override
     public void addAllItems(ArrayList<Session> sessionsList) {
         mListOfSessions.clear();
         mListOfSessions.addAll(sessionsList);

@@ -41,7 +41,7 @@ public class RequestManagerImpl implements RequestManager {
 
     @Override
     public void checkIfUsernameIsAlreadyTaken(final String username, final RequestResponseListener listener) {
-        firebaseHelper.getListOfTakenUsernames(username, new ResponseListener<DataSnapshot>() {
+        firebaseHelper.getListOfTakenUsernames(new ResponseListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot callback) {
                 if (!AuthenticationUtils.checkIfUserAlreadyExists(username, callback))

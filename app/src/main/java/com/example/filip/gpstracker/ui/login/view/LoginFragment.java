@@ -72,7 +72,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
 
     @Override
     public void onFailedLogin() {
-        Toast.makeText(getActivity().getApplicationContext(), R.string.failed_login_error_message, Toast.LENGTH_SHORT).show();
+        mEmailEditText.setError(getActivity().getString(R.string.failed_login_error_message));
     }
 
     @Override

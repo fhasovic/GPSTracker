@@ -17,7 +17,7 @@ public class TrackingStatsHelperImpl implements TrackingStatsHelper {
     }
 
     @Override
-    public void addDistanceFromNewLocationsToTotalDistance(Location currentLocation) {
+    public void addDistanceFromNewLocationToTotalDistance(Location currentLocation) {
         if (currentSessionStats != null && lastLocation != null)
             currentSessionStats.addMoreDistanceTraversed(lastLocation.distanceTo(currentLocation));
     }
@@ -52,5 +52,4 @@ public class TrackingStatsHelperImpl implements TrackingStatsHelper {
     private int calculateTimeElapsed(long startTime, long endTime) {
         return (int) ((endTime - startTime) / 1000);
     }
-
 }

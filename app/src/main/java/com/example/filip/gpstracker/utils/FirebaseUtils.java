@@ -27,7 +27,7 @@ public class FirebaseUtils {
         return locationPing;
     }
 
-    public static Map<String, Object> createTrackingStatsObject(long timeElapsed, float distanceTraversed, String sessionName) {
+    public static Map<String, Object> createTrackingStatsObject(int timeElapsed, float distanceTraversed, String sessionName) {
         Map<String, Object> trackingStats = new HashMap<>();
         trackingStats.put(Constants.SESSION_KEY, sessionName);
         trackingStats.put(Constants.TIME_ELAPSED_KEY, timeElapsed);

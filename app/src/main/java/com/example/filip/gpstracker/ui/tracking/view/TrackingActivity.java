@@ -63,13 +63,18 @@ public class TrackingActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         mToolbar.setTitle(R.string.start_a_new_session_fragment_title);
-        setHomeButtonsAsNavBarOpening(getSupportActionBar());
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+            setHomeButtonsAsNavBarOpening(actionBar);
     }
 
     private void initNavBar() {
         navigationView = (NavigationView) findViewById(R.id.tracking_activity_navigation_view);
-        TextView usernameTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_drawer_header_username_text_view); //get the text view from the first header(only one header atm)
-        usernameTextView.setText(getIntent().getStringExtra(Constants.USERNAME_KEY));
+        if (navigationView != null) {
+            TextView usernameTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_drawer_header_username_text_view); //get the text view from the first header(only one header atm)
+            usernameTextView.setText(getIntent().getStringExtra(Constants.USERNAME_KEY));
+        }
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {

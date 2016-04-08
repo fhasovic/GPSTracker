@@ -12,7 +12,6 @@ import com.example.filip.gpstracker.R;
  * Created by Filip on 08/03/2016.
  */
 public class LoginActivity extends AppCompatActivity {
-    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,8 +23,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle(R.string.login_activity_toolbar_title);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (mToolbar != null)
+            mToolbar.setTitle(R.string.login_activity_toolbar_title);
     }
 
     private void initFragment() {

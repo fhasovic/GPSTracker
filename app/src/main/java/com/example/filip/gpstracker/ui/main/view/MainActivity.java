@@ -21,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initToolbar() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        mToolbar.setTitle(R.string.main_activity_toolbar_title_message);
+        if (mToolbar != null)
+            mToolbar.setTitle(R.string.main_activity_toolbar_title_message);
     }
 
     private void initFragment() {

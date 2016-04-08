@@ -8,7 +8,7 @@ import com.example.filip.gpstracker.pojo.Stats;
  * Created by Filip on 03/03/2016.
  */
 public interface TrackingStatsHelper {
-    void addDistanceFromNewLocationsToTotalDistance(Location currentLocation);
+    void addDistanceFromNewLocationToTotalDistance(Location currentLocation);
 
     void setCurrentSessionStats(Stats stats);
 
